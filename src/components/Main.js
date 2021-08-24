@@ -5,6 +5,14 @@ import { CurrentUserContext } from '../contexts/CurrentUserContext';
 function Main(props) {
   const currentUser = React.useContext(CurrentUserContext);
 
+  React.useEffect(() => {
+    props.getCards();
+  }, [])
+
+  React.useEffect(() => {
+    props.getUserInfo();
+  }, [])
+
   return (
     <main>
       <section className="profile">

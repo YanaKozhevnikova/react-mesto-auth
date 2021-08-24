@@ -1,7 +1,8 @@
 class Api {
-  constructor(baseUrl, token) {
+  constructor(baseUrl, token, authUrl) {
     this._baseUrl = baseUrl;
     this._token = token;
+    this._authUrl = authUrl;
   }
 
   _checkResponse(res) {
@@ -87,7 +88,40 @@ class Api {
       })
     .then(this._checkResponse)
   }
+
+  login(email, password) {
+    return fetch(`${this._authUrl}signin`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({"password": password, "email": email})
+    })
+    .then(this._checkResponse)
+  }
+
+  register(email, password) {
+    return fetch(`${this._authUrl}signup`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({"password": password, "email": email})
+    })
+    .then(this._checkResponse)
+  }
+
+  checkToken(token) {
+    return fetch(`${this._authUrl}users/me`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization' : `Bearer ${token}`
+      },
+    })
+    .then(this._checkResponse)
+  }
 }
 
-const api = new Api('https://mesto.nomoreparties.co/v1/cohort-24/', '0c664d7d-5920-42ff-9591-f94b8c7db340')
+const api = new Api('https://mesto.nomoreparties.co/v1/cohort-24/', '0c664d7d-5920-42ff-9591-f94b8c7db340', 'https://auth.nomoreparties.co/')
 export default api;

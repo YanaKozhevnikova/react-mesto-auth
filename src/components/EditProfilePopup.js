@@ -41,7 +41,7 @@ function EditProfilePopup(props) {
       <span className="form__input-error name-input-error"></span>
       <input value={description} onChange={handleDescriptionChange} type="text" required minLength="2" maxLength="200" placeholder="О себе" name="about" id="about-input" className="form__input form__input_type_about" />
       <span className="form__input-error about-input-error"></span>
-  </PopupWithForm>
+    </PopupWithForm>
   )
 }
 
