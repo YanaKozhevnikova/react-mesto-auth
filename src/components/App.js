@@ -48,23 +48,15 @@ function App() {
 
   React.useEffect(() => {
     if (loggedIn) {
-      api.getInitialCards()
-      .then((cards) => {
+      Promise.all([api.getInitialCards(), api.getUserInfo()])
+      .then(([cards, userInfo]) => {
         setCards(cards);
-      })
-      .catch(err => console.log(err))
-    }
-  }, [loggedIn])
-
-  React.useEffect(() => {
-    if (loggedIn) {
-      api.getUserInfo()
-      .then((userInfo) => {
         setCurrentUser(userInfo);
       })
       .catch(err => console.log(err))
     }
   }, [loggedIn])
+
 
   function handleAddPlaceSubmit(card) {
     api.postCard(card)
