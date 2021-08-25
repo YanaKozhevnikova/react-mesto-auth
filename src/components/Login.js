@@ -1,7 +1,7 @@
 import React from 'react';
 
 
-function Login(props) {
+function Login({ onLogin }) {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
 
@@ -15,7 +15,7 @@ function Login(props) {
 
   function handleSubmit(e) {
     e.preventDefault();
-    props.onLogin(email, password);
+    onLogin(email, password);
     setEmail('');
     setPassword('');
   }
@@ -26,7 +26,7 @@ function Login(props) {
       <form onSubmit={handleSubmit} name="signin" className="form">
         <input value={email} onChange={handleEmailChange} type="email" required placeholder="Email" name="email" id="email-input" className="form__input form__input_type_auth" />
         <span className="form__input-error name-input-error"></span>
-        <input value={password} onChange={handlePasswordChange} type="text" required minLength="2" maxLength="40" placeholder="Пароль" name="password" id="password-input" className="form__input form__input_type_auth" />
+        <input value={password} onChange={handlePasswordChange} type="password" required minLength="2" maxLength="40" placeholder="Пароль" name="password" id="password-input" className="form__input form__input_type_auth" />
         <span className="form__input-error about-input-error"></span>
         <button type="submit" className="form__save-button form__save-button_type_auth">Войти</button>
       </form>

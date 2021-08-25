@@ -20,7 +20,7 @@ function App() {
   const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = React.useState(false);
   const [isTooltipOpen, setTooltipOpen] = React.useState(false);
   const [selectedCard, setSelectedCard] = React.useState({name: '', link: ''});
-  const [currentUser, setCurrentUser] = React.useState({});
+  const [currentUser, setCurrentUser] = React.useState({name: '', about: '', avatar: ''});
   const [cards, setCards] = React.useState([]);
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [isSuccessful, setSuccessful] = React.useState(false);
@@ -44,25 +44,27 @@ function App() {
         console.log(err);
       })
     }
-  }, [])
+  }, [history])
 
+  React.useEffect(() => {
+    if (loggedIn) {
+      api.getInitialCards()
+      .then((cards) => {
+        setCards(cards);
+      })
+      .catch(err => console.log(err))
+    }
+  }, [loggedIn])
 
- function getUserInfo() {
-    api.getUserInfo()
-    .then((userInfo) => {
-      setCurrentUser(userInfo);
-    })
-    .catch(err => console.log(err))
-  }
-
-  //добавление карточек и их функции
-  function getCards() {
-    api.getInitialCards()
-    .then((cards) => {
-      setCards(cards);
-    })
-    .catch(err => console.log(err))
-  }
+  React.useEffect(() => {
+    if (loggedIn) {
+      api.getUserInfo()
+      .then((userInfo) => {
+        setCurrentUser(userInfo);
+      })
+      .catch(err => console.log(err))
+    }
+  }, [loggedIn])
 
   function handleAddPlaceSubmit(card) {
     api.postCard(card)
@@ -156,11 +158,6 @@ function App() {
     .then(data => {
       if (data.token) {
         localStorage.setItem('token', data.token);
-        return data;
-      }
-    })
-    .then(data => {
-      if (data.token) {
         setLoggedIn(true);
         setEmail(email)
         history.push('/');
@@ -191,8 +188,6 @@ function App() {
             exact path="/"
             loggedIn={loggedIn}
             component={Main}
-            getCards={getCards}
-            getUserInfo={getUserInfo}
             onEditProfile={handleEditProfileClick}
             onAddPlace={handleAddPlaceClick}
             onEditAvatar={handleEditAvatarClick}

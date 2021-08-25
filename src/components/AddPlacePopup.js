@@ -1,14 +1,14 @@
 import React from 'react';
 import PopupWithForm from './PopupWithForm';
 
-function AddPlacePopup(props) {
+function AddPlacePopup({isOpen, onClose, onAddPlace}) {
   const [name, setName] = React.useState('');
   const [link, setLink] = React.useState('');
 
   React.useEffect(() => {
     setName('');
     setLink('')
-  }, [props.isOpen])
+  }, [isOpen])
 
   function handleNameChange(e) {
     setName(e.target.value);
@@ -20,7 +20,7 @@ function AddPlacePopup(props) {
 
   function handleSubmit(e) {
     e.preventDefault();
-    props.onAddPlace({
+    onAddPlace({
       name: name,
       link: link,
     });
@@ -31,8 +31,8 @@ function AddPlacePopup(props) {
       name="place"
       title="Новое место"
       submit="Сохранить"
-      isOpen={props.isOpen}
-      onClose={props.onClose}
+      isOpen={isOpen}
+      onClose={onClose}
       onSubmit={handleSubmit}
       >
         <input value={name} onChange={handleNameChange} type="text" required minLength="2" maxLength="30" placeholder="Название" name="placename" id="place-name-input" className="form__input form__input_type_place-name" />
